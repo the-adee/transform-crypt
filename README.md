@@ -1,4 +1,4 @@
-# Rotational Encryption System
+# Transform Crypt
 
 This project implements a **custom encryption and decryption system in Python** that secures text data using a combination of mathematical transformations. It uses **ASCII-coordinate mapping**, **rotation**, **shear**, and **randomized reflection** transformations to produce a reversible encrypted form of text. A secret key, generated randomly each time, is used to drive these transformations and is securely stored using symmetric encryption (`Fernet`).
 

@@ -1,31 +1,35 @@
 # Transform Crypt
 
-This project implements a **custom encryption and decryption system in Python** that secures text data using a combination of mathematical transformations. It uses **ASCII-coordinate mapping**, **rotation**, **shear**, and **randomized reflection** transformations to produce a reversible encrypted form of text. A secret key, generated randomly each time, is used to drive these transformations and is securely stored using symmetric encryption (`Fernet`).
+**Transform Crypt** is a custom Python encryption system that secures text using a combination of mathematical transformations. It uniquely applies **ASCII-coordinate mapping**, **rotation**, **shear**, and **randomized reflection** to obfuscate characters in a reversible way. A new secret key is generated for each encryption instance and securely stored using Fernet-based symmetric encryption.
 
 ---
 
 ## Features
 
-- **Coordinate-based encryption**: Maps characters to 2D space using ASCII and index.
-- **Rotation and Shear**: Applies matrix-based geometric transformations.
-- **Random Reflection**: Reflects every nth character where `n` is randomly generated.
-- **System-Generated Key**: A unique encryption key is generated per instance.
-- **Base64 Serialization**: Encoded encrypted data is safely transmitted as a single string.
-- **Modular Design**: Each module is separated logically for readability and reuse.
+- **Coordinate-Based Encryption** – Maps characters to 2D space using ASCII values and their index.
+- **Rotation and Shear** – Applies geometric matrix transformations to distort the input.
+- **Randomized Reflection** – Reflects every nth character where `n` is randomly chosen per encryption.
+- **System-Generated Key** – A new encryption key is created for each encryption instance.
+- **Base64 Serialization** – Final encrypted data is encoded for safe transmission or storage.
+- **Modular Python Design** – Clean separation of logic across multiple files.
 
 ---
 
 ## System Workflow
 
-1. **Text input** is converted to coordinate pairs.
-2. **Transformations** are applied in the order: Shear → Rotation → Reflection.
-3. All data is **serialized** and returned as an encrypted string.
-4. During decryption, the steps are reversed using metadata from the encrypted string.
+1. Text input is mapped to coordinates.
+2. Shear, rotation, and optional reflection transformations are applied.
+3. Encrypted coordinates and parameters are serialized.
+4. Decryption reverses the process using metadata and key.
+
+---
 
 ## Project Structure
 
+
+
 ```
-rotational-encryption/
+transform-crypt/
 ├── main.py                         # Entry point
 ├── encryption_module/
 │   ├── __init__.py                 # Package exports
@@ -49,8 +53,8 @@ rotational-encryption/
 
 ### Clone the Repository
 ```bash
-git clone https://github.com/your-username/rotational-encryption.git
-cd rotational-encryption
+git clone https://github.com/the-great-adee/transform-crypt.git
+cd transform-crypt
 ```
 
 ### Run the Program
@@ -97,4 +101,4 @@ This project is licensed under the MIT License.
 
 ## Contributing
 
-Feel free to submit issues, suggest features, or create pull requests.
+You're welcome to contribute! Feel free to open issues, suggest improvements, or submit pull requests.

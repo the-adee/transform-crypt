@@ -20,8 +20,9 @@ if __name__ == "__main__":
     encryption_execution_start_time = time.time()
 
     # Encrypt
-    encrypted_data = encrypt(text)
+    encrypted_data = encrypt(sample_text)
     print("🔐 Encrypted Data:", encrypted_data)
+    print()
 
     encryption_execution_end_time = time.time()
     print(encryption_execution_end_time - encryption_execution_start_time)

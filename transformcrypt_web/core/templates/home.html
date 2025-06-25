@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <title>Transform Crypt</title>
+    <style>
+      body {
+        background-color: #0f1b2e;
+        color: #f4f4f4;
+        font-family: "Segoe UI", "Roboto", sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 40px auto;
+        background-color: #1d2a40;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+      }
+
+      h1 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #00ffcc;
+        font-weight: 600;
+      }
+
+      textarea {
+        width: 100%;
+        height: 120px;
+        resize: vertical;
+        padding: 10px;
+        font-size: 16px;
+        font-family: monospace;
+        border: none;
+        border-radius: 5px;
+        background-color: #0f243a;
+        color: #f1f1f1;
+        margin-bottom: 15px;
+      }
+
+      .button-group {
+        text-align: center;
+      }
+
+      button {
+        background-color: #00b4d8;
+        color: white;
+        border: none;
+        padding: 10px 18px;
+        font-size: 16px;
+        margin: 5px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      button:hover {
+        background-color: #0077b6;
+      }
+
+      .result-box {
+        margin-top: 30px;
+        background-color: #0f243a;
+        border: 1px solid #2e4a67;
+        border-radius: 6px;
+        padding: 15px 15px 45px 15px;
+        font-family: monospace;
+        white-space: pre-wrap;
+        word-break: break-word;
+        line-height: 1.6;
+        position: relative;
+      }
+
+      .result-box strong {
+        color: #00ffcc;
+      }
+
+      .copy-button {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 13px;
+        padding: 6px 10px;
+        background-color: #00b4d8;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        color: white;
+      }
+
+      .copy-button:hover {
+        background-color: #0077b6;
+      }
+
+      .footer-dock {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(15, 27, 46, 0.6);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 10px 25px;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        font-size: 14px;
+        color: #ddd;
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        font-family: "Segoe UI", "Roboto", sans-serif;
+      }
+
+      .animate-slide-up {
+        animation: slideUp 0.7s ease-in-out;
+      }
+
+      @keyframes slideUp {
+        from {
+          opacity: 0;
+          transform: translate(-50%, 30px);
+        }
+        to {
+          opacity: 1;
+          transform: translate(-50%, 0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>🔐 Transform Crypt</h1>
+
+      <form method="post">
+        {% csrf_token %}
+        <label for="text">Enter your message/content:</label><br /><br />
+        <textarea name="text" id="text" required>{{ input }}</textarea>
+
+        <div class="button-group">
+          <button type="submit" name="encrypt">Encrypt</button>
+          <button type="submit" name="decrypt">Decrypt</button>
+          <button type="button" onclick="loadDemoText()">Use Demo Text</button>
+        </div>
+      </form>
+
+      {% if output %}
+      <div class="result-box">
+        <strong>Result:</strong>
+        <button class="copy-button" onclick="copyToClipboard()">Copy</button>
+        <div id="outputText">{{ output }}</div>
+      </div>
+      {% endif %} {% if error %}
+      <div
+        style="
+          margin-top: 20px;
+          padding: 12px;
+          background-color: #842029;
+          color: white;
+          border-radius: 6px;
+        "
+      >
+        {{ error }}
+      </div>
+      {% endif %}
+    </div>
+
+    <footer id="footerDock" class="footer-dock">
+      <span>🔐 <strong>Transform Crypt</strong></span>
+      <a
+        href="https://github.com/the-great-adee/transform-crypt"
+        target="_blank"
+        style="color: #00b4d8; text-decoration: none"
+      >
+        <i class="fab fa-github"></i> GitHub
+      </a>
+      <a
+        href="mailto:testsample108@protonmail.com"
+        style="color: #00b4d8; text-decoration: none"
+      >
+        <i class="fas fa-envelope"></i> Contact
+      </a>
+    </footer>
+
+    <script>
+      function loadDemoText() {
+        const samples = [
+          "This is a sample message to encrypt!",
+          "Encrypt this: Hello from Transform Crypt!",
+          "Secret notes go here 🕵️",
+          "Confidential: Project X data",
+        ];
+        document.getElementById("text").value =
+          samples[Math.floor(Math.random() * samples.length)];
+      }
+
+      function copyToClipboard() {
+        const text = document.getElementById("outputText").innerText;
+
+        if (navigator.clipboard) {
+          navigator.clipboard
+            .writeText(text)
+            .then(() => {
+              showCopyToast();
+            })
+            .catch(() => {
+              fallbackCopy(text);
+            });
+        } else {
+          fallbackCopy(text);
+        }
+      }
+
+      function fallbackCopy(text) {
+        const temp = document.createElement("textarea");
+        temp.value = text;
+        document.body.appendChild(temp);
+        temp.select();
+        document.execCommand("copy");
+        document.body.removeChild(temp);
+        showCopyToast();
+      }
+
+      function showCopyToast() {
+        const toast = document.createElement("div");
+        toast.innerText = "Copied to clipboard!";
+        toast.style.position = "fixed";
+        toast.style.bottom = "90px";
+        toast.style.left = "50%";
+        toast.style.transform = "translateX(-50%)";
+        toast.style.background = "#00b4d8";
+        toast.style.color = "white";
+        toast.style.padding = "8px 16px";
+        toast.style.borderRadius = "6px";
+        toast.style.boxShadow = "0 4px 12px rgba(0,0,0,0.2)";
+        toast.style.fontSize = "14px";
+        toast.style.zIndex = "10000";
+        document.body.appendChild(toast);
+
+        setTimeout(() => {
+          toast.remove();
+        }, 1800);
+      }
+
+      window.addEventListener("load", function () {
+        const footer = document.getElementById("footerDock");
+        const hasAnimated = sessionStorage.getItem("footerAnimated");
+
+        if (!hasAnimated) {
+          footer.classList.add("animate-slide-up");
+          sessionStorage.setItem("footerAnimated", "true");
+        }
+      });
+    </script>
+  </body>
+</html>

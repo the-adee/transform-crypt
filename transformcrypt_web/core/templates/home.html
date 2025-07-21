@@ -8,6 +8,7 @@
     />
     <title>Transform Crypt</title>
     <style>
+      /* Base styles */
       body {
         background-color: #0f1b2e;
         color: #f4f4f4;
@@ -100,6 +101,7 @@
         background-color: #0077b6;
       }
 
+      /* Footer dock style */
       .footer-dock {
         position: fixed;
         bottom: 20px;
@@ -140,11 +142,29 @@
     <div class="container">
       <h1>🔐 Transform Crypt</h1>
 
-      <form method="post">
+      <!-- Encryption/Decryption Form -->
+      <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        <label for="text">Enter your message/content:</label><br /><br />
-        <textarea name="text" id="text" required>{{ input }}</textarea>
 
+        <!-- Text area input -->
+        <label for="text">Enter your message:</label>
+        <br />
+        <br />
+        <textarea name="text" id="text">{{ input }}</textarea>
+
+        <!-- File upload input -->
+        <label for="file" style="margin-top: 15px; display: block">
+          Or upload a file (.txt, .csv, .json, .enc):
+        </label>
+        <input
+          type="file"
+          name="file"
+          id="file"
+          accept=".txt,.csv,.json,.enc"
+          style="margin-bottom: 15px"
+        />
+
+        <!-- Action buttons -->
         <div class="button-group">
           <button type="submit" name="encrypt">Encrypt</button>
           <button type="submit" name="decrypt">Decrypt</button>
@@ -152,13 +172,17 @@
         </div>
       </form>
 
+      <!-- Encrypted or Decrypted text result -->
       {% if output %}
       <div class="result-box">
         <strong>Result:</strong>
         <button class="copy-button" onclick="copyToClipboard()">Copy</button>
         <div id="outputText">{{ output }}</div>
       </div>
-      {% endif %} {% if error %}
+      {% endif %}
+
+      <!-- Error message -->
+      {% if error %}
       <div
         style="
           margin-top: 20px;
@@ -171,10 +195,27 @@
         {{ error }}
       </div>
       {% endif %}
+
+      <!-- Success message for file processed -->
+      {% if message %}
+      <div
+        style="
+          margin-top: 20px;
+          padding: 12px;
+          background-color: #155724;
+          color: #d4edda;
+          border: 1px solid #c3e6cb;
+          border-radius: 6px;
+        "
+      >
+        {{ message }}
+      </div>
+      {% endif %}
     </div>
 
+    <!-- Docked footer -->
     <footer id="footerDock" class="footer-dock">
-      <span>Math with &#128151; by <strong> Adee</strong></span>
+      <span>Math with ❤️ by <strong>Adee</strong></span>
       <a
         href="https://github.com/the-great-adee/transform-crypt"
         target="_blank"
@@ -190,7 +231,9 @@
       </a>
     </footer>
 
+    <!-- JavaScript -->
     <script>
+      // Load a random demo message into the textarea
       function loadDemoText() {
         const samples = [
           "This is a sample message to encrypt!",
@@ -202,6 +245,7 @@
           samples[Math.floor(Math.random() * samples.length)];
       }
 
+      // Copy result text to clipboard
       function copyToClipboard() {
         const text = document.getElementById("outputText").innerText;
 
@@ -219,6 +263,7 @@
         }
       }
 
+      // Fallback for older browsers
       function fallbackCopy(text) {
         const temp = document.createElement("textarea");
         temp.value = text;
@@ -229,6 +274,7 @@
         showCopyToast();
       }
 
+      // Show temporary toast on copy
       function showCopyToast() {
         const toast = document.createElement("div");
         toast.innerText = "Copied to clipboard!";
@@ -250,6 +296,7 @@
         }, 1800);
       }
 
+      // Animate footer on first load only
       window.addEventListener("load", function () {
         const footer = document.getElementById("footerDock");
         const hasAnimated = sessionStorage.getItem("footerAnimated");

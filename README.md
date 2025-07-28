@@ -24,6 +24,33 @@
 
 ---
 
+
+
+## Screenshots
+
+### Homepage
+A clean and user-friendly landing page where users can input text and choose to encrypt or decrypt it.
+
+![Homepage](transformcrypt_web/assets/screenshots/homepage.gif)
+
+---
+
+### Encryption Output
+Displays the encrypted result in a styled box with a copy button for convenience.
+
+![Encryption Result](transformcrypt_web/assets/screenshots/encryption_success.gif)
+
+---
+
+### Decryption Output
+Shows the decrypted message restored from an encrypted string with proper formatting.
+
+![Decryption Result](transformcrypt_web/assets/screenshots/decryption_success.gif)
+
+
+---
+
+
 ## Project Structure
 
 
